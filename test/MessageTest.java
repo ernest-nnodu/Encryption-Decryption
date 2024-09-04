@@ -1,4 +1,5 @@
-import encryptdecrypt.AtBashEncryption;
+
+import encryptdecrypt.EncryptionAlgorithm;
 import encryptdecrypt.Message;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -49,7 +50,7 @@ public class MessageTest {
     public void testEncryptSimpleText() {
         Message message = new Message("abc");
         String expected = "zyx";
-        String actual = message.encryptMessage(new AtBashEncryption());
+        String actual = message.encryptMessage(new EncryptionAlgorithm());
         assertEquals(expected, actual);
     }
 
@@ -58,7 +59,7 @@ public class MessageTest {
     public void testEncryptMixedCaseText() {
         Message message = new Message("ABc");
         String expected = "zyx";
-        String actual = message.encryptMessage(new AtBashEncryption());
+        String actual = message.encryptMessage(new EncryptionAlgorithm());
         assertEquals(expected, actual);
     }
 
@@ -67,7 +68,7 @@ public class MessageTest {
     public void testEncryptTextWithSpacesAndPunctuation() {
         Message message = new Message("a b c!");
         String expected = "z y x!";
-        String actual = message.encryptMessage(new AtBashEncryption());
+        String actual = message.encryptMessage(new EncryptionAlgorithm());
         assertEquals(expected, actual);
     }
 
@@ -76,7 +77,7 @@ public class MessageTest {
     public void testEncryptEmptyText() {
         Message message = new Message("");
         String expected = "";
-        String actual = message.encryptMessage(new AtBashEncryption());
+        String actual = message.encryptMessage(new EncryptionAlgorithm());
         assertEquals(expected, actual);
     }
 
@@ -85,7 +86,7 @@ public class MessageTest {
     public void testEncryptNonAlphabeticText() {
         Message message = new Message("123@#");
         String expected = "123@#";
-        String actual = message.encryptMessage(new AtBashEncryption());
+        String actual = message.encryptMessage(new EncryptionAlgorithm());
         assertEquals(expected, actual);
     }
 
@@ -94,7 +95,37 @@ public class MessageTest {
     public void testEncryptLongText() {
         Message message = new Message("we found a treasure!");
         String expected = "dv ulfmw z givzhfiv!";
-        String actual = message.encryptMessage(new AtBashEncryption());
+        String actual = message.encryptMessage(new EncryptionAlgorithm());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Encrypt sentence using caesar encryption")
+    public void testCaesarShiftEncrypt() {
+        Message message = new Message("welcome to hyperskill");
+        int key = 5;
+        String expected = "bjqhtrj yt mdujwxpnqq";
+        String actual = message.encryptMessage(new EncryptionAlgorithm(), key);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Encrypt test using caesar encryption with wrap around key")
+    public void testCaesarShiftEncryptWithWrapAround() {
+        Message message = new Message("xyz");
+        int key = 3;
+        String expected = "abc";
+        String actual = message.encryptMessage(new EncryptionAlgorithm(), key);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Encrypt non alphabetical text using caesar encryption")
+    public void testCaesarShiftEncryptWithNonLetters() {
+        Message message = new Message("hello world!");
+        int key = 1;
+        String expected = "ifmmp xpsme!";
+        String actual = message.encryptMessage(new EncryptionAlgorithm(), key);
         assertEquals(expected, actual);
     }
 }

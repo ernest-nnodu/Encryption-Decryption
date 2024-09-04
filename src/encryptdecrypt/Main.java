@@ -1,9 +1,13 @@
 package encryptdecrypt;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
 
-        Message message = new Message("we found a treasure!");
-        System.out.println(message.encryptMessage(new AtBashEncryption()));
+        Scanner scanner = new Scanner(System.in);
+        Message message = new Message(scanner.nextLine());
+        int key = scanner.nextInt();
+        System.out.println(message.encryptMessage(new EncryptionAlgorithm(), key));
     }
 }

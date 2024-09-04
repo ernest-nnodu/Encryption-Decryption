@@ -16,7 +16,11 @@ public class Message {
         this.text = text;
     }
 
-    public String encryptMessage(AtBashEncryption encryption) {
-        return encryption.encrypt(text);
+    public String encryptMessage(EncryptionAlgorithm encryption) {
+        return encryption.atBashEncrypt(text);
+    }
+
+    public String encryptMessage(EncryptionAlgorithm encryption, int key) {
+        return encryption.caesarShiftEncrypt(text, key);
     }
 }

@@ -1,19 +1,20 @@
-import encryptdecrypt.AtBashEncryption;
+
+import encryptdecrypt.EncryptionAlgorithm;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AtBashEncryptTest {
+public class EncryptionAlgorithmTest {
 
-    private final AtBashEncryption atBashEncryption = new AtBashEncryption();
+    private final EncryptionAlgorithm encryption = new EncryptionAlgorithm();
 
     @Test
     @DisplayName("Encrypt lowercase text")
     public void testAtBashEncryptWithLowercaseText() {
         String input = "abc";
         String expected = "zyx";
-        String actual = atBashEncryption.encrypt(input);
+        String actual = encryption.atBashEncrypt(input);
         assertEquals(expected, actual);
     }
 
@@ -22,7 +23,7 @@ public class AtBashEncryptTest {
     public void testAtBashEncryptWithUppercaseText() {
         String input = "abc";
         String expected = "zyx";
-        String actual = atBashEncryption.encrypt(input);
+        String actual = encryption.atBashEncrypt(input);
         assertEquals(expected, actual);
     }
 
@@ -31,7 +32,7 @@ public class AtBashEncryptTest {
     public void testAtBashEncryptWithMixedCaseText() {
         String input = "AbC";
         String expected = "zyx";
-        String actual = atBashEncryption.encrypt(input);
+        String actual = encryption.atBashEncrypt(input);
         assertEquals(expected, actual);
     }
 
@@ -40,7 +41,7 @@ public class AtBashEncryptTest {
     public void testAtBashEncryptWithSpacesAndPunctuation() {
         String input = "a b c!";
         String expected = "z y x!";
-        String actual = atBashEncryption.encrypt(input);
+        String actual = encryption.atBashEncrypt(input);
         assertEquals(expected, actual);
     }
 
@@ -49,7 +50,7 @@ public class AtBashEncryptTest {
     public void testAtBashEncryptWithFullSentence() {
         String input = "we found a treasure!";
         String expected = "dv ulfmw z givzhfiv!";
-        String actual = atBashEncryption.encrypt(input);
+        String actual = encryption.atBashEncrypt(input);
         assertEquals(expected, actual);
     }
 
@@ -58,7 +59,7 @@ public class AtBashEncryptTest {
     public void testAtBashEncryptWithEmptyString() {
         String input = "";
         String expected = "";
-        String actual = atBashEncryption.encrypt(input);
+        String actual = encryption.atBashEncrypt(input);
         assertEquals(expected, actual);
     }
 
@@ -67,7 +68,7 @@ public class AtBashEncryptTest {
     public void testAtBashEncryptWithNonAlphabeticCharacters() {
         String input = "1234!@#";
         String expected = "1234!@#";
-        String actual = atBashEncryption.encrypt(input);
+        String actual = encryption.atBashEncrypt(input);
         assertEquals(expected, actual);
     }
 
@@ -76,7 +77,34 @@ public class AtBashEncryptTest {
     public void testAtBashEncryptWithAllLetters() {
         String input = "abcdefghijklmnopqrstuvwxyz";
         String expected = "zyxwvutsrqponmlkjihgfedcba";
-        String actual = atBashEncryption.encrypt(input);
+        String actual = encryption.atBashEncrypt(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCaesarShiftEncrypt() {
+        String input = "welcome to hyperskill";
+        int key = 5;
+        String expected = "bjqhtrj yt mdujwxpnqq";
+        String actual = encryption.caesarShiftEncrypt(input, key);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCaesarShiftEncryptWithWrapAround() {
+        String input = "xyz";
+        int key = 3;
+        String expected = "abc";
+        String actual = encryption.caesarShiftEncrypt(input, key);
+        assertEquals(expected, actual, "The Caesar Cipher encryption did not correctly wrap around the alphabet.");
+    }
+
+    @Test
+    public void testCaesarShiftEncryptWithNonLetters() {
+        String input = "hello world!";
+        int key = 1;
+        String expected = "ifmmp xpsme!";
+        String actual = encryption.caesarShiftEncrypt(input, key);
         assertEquals(expected, actual);
     }
 }

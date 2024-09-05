@@ -128,6 +128,26 @@ public class MessageTest {
         String actual = message.encryptMessage(new EncryptionAlgorithm(), key);
         assertEquals(expected, actual);
     }
+
+    @Test
+    @DisplayName("Encrypt text using unicode encryption")
+    public void testEncryptWithUnicode() {
+        Message message = new Message("hello world!");
+        int key = 1;
+        String expected = "ifmmp!xpsme\"";
+        String actual = message.encryptMessageWithUnicode(new EncryptionAlgorithm(), key);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Decrypt text using unicode decryption")
+    public void testDecryptWithUnicode() {
+        Message message = new Message("ifmmp!xpsme\"");
+        int key = 1;
+        String expected = "hello world!";
+        String actual = message.decryptMessageWithUnicode(new EncryptionAlgorithm(), key);
+        assertEquals(expected, actual);
+    }
 }
 
 

@@ -96,7 +96,7 @@ public class EncryptionAlgorithmTest {
         int key = 3;
         String expected = "abc";
         String actual = encryption.caesarShiftEncrypt(input, key);
-        assertEquals(expected, actual, "The Caesar Cipher encryption did not correctly wrap around the alphabet.");
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -105,6 +105,24 @@ public class EncryptionAlgorithmTest {
         int key = 1;
         String expected = "ifmmp xpsme!";
         String actual = encryption.caesarShiftEncrypt(input, key);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testUnicodeEncrypt() {
+        String input = "hello world!";
+        int key = 1;
+        String expected = "ifmmp!xpsme\"";
+        String actual = encryption.unicodeEncrypt(input, key);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testUnicodeDecrypt() {
+        String input = "ifmmp!xpsme\"";
+        int key = 1;
+        String expected = "hello world!";
+        String actual = encryption.unicodeDecrypt(input, key);
         assertEquals(expected, actual);
     }
 }

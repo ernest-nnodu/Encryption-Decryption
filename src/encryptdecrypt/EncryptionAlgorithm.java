@@ -42,4 +42,31 @@ public class EncryptionAlgorithm {
         }
         return encryptedData.toString();
     }
+
+    public String unicodeEncrypt(String data, int key) {
+
+        if (data.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder encryptedData = new StringBuilder();
+
+        for (char ch : data.toCharArray()) {
+            encryptedData.append((char) (ch + key)); //Shift by the key using unicode values
+        }
+        return encryptedData.toString();
+    }
+
+    public String unicodeDecrypt(String data, int key) {
+        if (data.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder decryptedData = new StringBuilder();
+
+        for (char ch : data.toCharArray()) {
+            decryptedData.append((char) (ch - key));
+        }
+        return decryptedData.toString();
+    }
 }

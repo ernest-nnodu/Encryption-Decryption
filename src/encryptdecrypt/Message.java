@@ -2,7 +2,7 @@ package encryptdecrypt;
 
 public class Message {
 
-    String text;
+    private String text;
 
     public Message(String text) {
         this.text = text;
@@ -16,20 +16,29 @@ public class Message {
         this.text = text;
     }
 
-    public String encryptMessage(EncryptionAlgorithm encryption) {
-
-        return encryption.atBashEncrypt(text);
+    public String encryptMessageWithAtBash(EncryptionAlgorithm algorithm) {
+        return algorithm.atBashEncrypt(text);
     }
 
-    public String encryptMessage(EncryptionAlgorithm encryption, int key) {
-        return encryption.caesarShiftEncrypt(text, key);
+    public String encryptMessageWithCaesar(EncryptionAlgorithm algorithm, int key) {
+        return algorithm.caesarShiftEncrypt(text, key);
     }
 
-    public String encryptMessageWithUnicode(EncryptionAlgorithm encryption, int key) {
-        return encryption.unicodeEncrypt(text, key);
+    public String decryptMessageWithCaesar(EncryptionAlgorithm algorithm, int key) {
+        return algorithm.caesarShiftDecrypt(text, key);
     }
 
-    public String decryptMessageWithUnicode(EncryptionAlgorithm encryption, int key) {
-        return encryption.unicodeDecrypt(text, key);
+    public String encryptMessageWithUnicode(EncryptionAlgorithm algorithm, int key) {
+        return algorithm.unicodeEncrypt(text, key);
+    }
+
+    public String decryptMessageWithUnicode(EncryptionAlgorithm algorithm, int key) {
+        return algorithm.unicodeDecrypt(text, key);
     }
 }
+
+
+
+
+
+

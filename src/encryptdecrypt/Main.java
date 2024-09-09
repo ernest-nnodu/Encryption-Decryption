@@ -12,13 +12,14 @@ public class Main {
         int key = 0;
         String inputFileName = "";
         String outputFileName = "";
+        String algorithm = "shift";
         StringBuilder data = new StringBuilder();
         boolean readFromFIle = false;
         boolean writeToFile = false;
         Message message = new Message(data.toString());
         String output;
 
-        Properties properties = getproperties(args, mode, key, inputFileName, readFromFIle, outputFileName, writeToFile, data);
+        Properties properties = getproperties(args, mode, key, algorithm, inputFileName, readFromFIle, outputFileName, writeToFile, data);
 
         message = getData(properties);
 
@@ -52,9 +53,25 @@ public class Main {
     private static String processData(Properties properties, Message message) {
         String output;
         if (properties.mode().equals("enc")) {
-            output = message.encryptMessageWithUnicode(new EncryptionAlgorithm(), properties.key());
+            output = encodeData(properties.algorithm(), properties.key(), message);
         } else {
-            output = message.decryptMessageWithUnicode(new EncryptionAlgorithm(), properties.key());
+            output = decodeData(properties.algorithm(), properties.key(), message);
+            //output = message.decryptMessageWithUnicode(new EncryptionAlgorithm(), properties.key());
+        }
+        return output;
+    }
+
+    private static String decodeData(String algorithm, int key, Message message) {
+        return algorithm.equals("unicode") ? message.decryptMessageWithUnicode(new EncryptionAlgorithm(), key) : 
+                message.decryptMessageWithCaesar(new EncryptionAlgorithm(), key);
+    }
+
+    private static String encodeData(String algorithm, int key, Message message) {
+        String output;
+        if (algorithm.equals("unicode")) {
+            output = message.encryptMessageWithUnicode(new EncryptionAlgorithm(), key);
+        } else {
+            output = message.encryptMessageWithCaesar(new EncryptionAlgorithm(), key);
         }
         return output;
     }
@@ -70,8 +87,9 @@ public class Main {
         }
     }
 
-    private static Properties getproperties(String[] args, String mode, int key, String inputFileName, boolean readFromFIle, 
-                                    String outputFileName, boolean writeToFile, StringBuilder data) {
+    private static Properties getproperties(String[] args, String mode, int key, String algorithm, 
+                                            String inputFileName, boolean readFromFIle, String outputFileName, 
+                                            boolean writeToFile, StringBuilder data) {
         for (int index = 0; index < args.length; index += 2) {
             switch (args[index]) {
                 case "-mode" -> mode = args[index + 1];
@@ -80,6 +98,7 @@ public class Main {
                     inputFileName = args[index + 1];
                     readFromFIle = true;
                 }
+                case "-alg" -> algorithm = args[index + 1];
                 case "-out" -> {
                     outputFileName = args[index + 1];
                     writeToFile = true;
@@ -90,10 +109,10 @@ public class Main {
                 }
             }
         }
-        return new Properties(mode, key, inputFileName, outputFileName, data, readFromFIle, writeToFile);
+        return new Properties(mode, key, algorithm, inputFileName, outputFileName, data, readFromFIle, writeToFile);
     }
 
-    private record Properties(String mode, int key, String inputFileName, String outputFileName, StringBuilder data, 
-                          boolean readFromFIle, boolean writeToFile) {
+    private record Properties(String mode, int key, String algorithm, String inputFileName, String outputFileName, 
+                              StringBuilder data, boolean readFromFIle, boolean writeToFile) {
     }
 }

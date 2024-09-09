@@ -43,6 +43,29 @@ public class EncryptionAlgorithm {
         return encryptedData.toString();
     }
 
+    public String caesarShiftDecrypt(String data, int key) {
+
+        if (data.isEmpty()) {
+            return "";
+        }
+
+        char firstAlphabet = 'a';
+        int alphabetLength = 26;
+        StringBuilder decryptedData = new StringBuilder();
+
+        for (char ch : data.toLowerCase().toCharArray()) {
+            if (Character.isLetter(ch)) {
+                // Reverse the shift by subtracting the key and ensuring it wraps around
+                char shifted = (char) (firstAlphabet + (ch - firstAlphabet - key + alphabetLength) % alphabetLength);
+                decryptedData.append(shifted);
+            } else {
+                decryptedData.append(ch); // Do not modify non-letter characters
+            }
+        }
+
+        return decryptedData.toString();
+    }
+
     public String unicodeEncrypt(String data, int key) {
 
         if (data.isEmpty()) {
